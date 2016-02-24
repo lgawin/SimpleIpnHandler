@@ -1,0 +1,5 @@
+rootProject.name = 'simple-ipn-handler'
+include 'logic'
+include 'app-servlet'
+include 'app-standalone'
+
