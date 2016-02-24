@@ -1,5 +1,7 @@
 package pl.lgawin.paypal.ipn.api;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collection;
@@ -13,7 +15,12 @@ public class NotificationsResponse {
     private final List<HttpRequestDetails> items;
 
     public NotificationsResponse(Collection<HttpRequestDetails> requests) {
-        size = requests.size();
+        this(requests.size(), requests);
+    }
+
+    @JsonCreator
+    private NotificationsResponse(@JsonProperty("size") int size, @JsonProperty("items") Collection<HttpRequestDetails> requests) {
+        this.size = size;
         items = ImmutableList.copyOf(requests);
     }
 

@@ -1,12 +1,17 @@
 package pl.lgawin.paypal.ipn.data;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import com.google.common.io.CharSource;
+import com.google.common.io.Resources;
+
 import org.apache.commons.codec.Charsets;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -16,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import pl.lgawin.paypal.ipn.api.NotificationsResponse;
 import pl.lgawin.paypal.ipn.dto.HttpRequestDetails;
 import pl.lgawin.paypal.ipn.utils.SchwartzianTransformItem;
 
@@ -25,6 +31,9 @@ public class InMemoryNotificationsRepository implements NotificationsRepository,
     private static final String PAY_KEY_PARAM = "pay_key";
 
     private final LinkedList<HttpRequestDetails> list = new LinkedList<>();
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Override
     public Collection<HttpRequestDetails> all() {
@@ -64,5 +73,8 @@ public class InMemoryNotificationsRepository implements NotificationsRepository,
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        CharSource charSource = Resources.asCharSource(Resources.getResource("init/data_ascending.json"), Charsets.UTF_8);
+        NotificationsResponse notifications = objectMapper.readValue(charSource.openStream(), NotificationsResponse.class);
+        list.addAll(Lists.reverse(notifications.getItems()));
     }
 }

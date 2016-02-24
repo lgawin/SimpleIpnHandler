@@ -1,5 +1,8 @@
 package pl.lgawin.paypal.ipn.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.joda.time.DateTime;
 import org.springframework.http.HttpHeaders;
 
@@ -8,7 +11,9 @@ public class HttpRequestDetails {
     private final HttpHeaders headers;
     private final String body;
 
-    public HttpRequestDetails(DateTime dateTime, HttpHeaders headers, String body) {
+    @JsonCreator
+    public HttpRequestDetails(@JsonProperty("dateTime") DateTime dateTime, @JsonProperty("headers") HttpHeaders headers,
+                              @JsonProperty("body") String body) {
         this.dateTime = dateTime;
         this.headers = headers;
         this.body = body;
