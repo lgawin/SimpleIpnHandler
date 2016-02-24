@@ -12,6 +12,7 @@ import org.joda.time.DateTimeZone;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import pl.lgawin.paypal.ipn.data.NotificationRepository;
@@ -52,21 +53,35 @@ public class MainController {
     }
 
     @RequestMapping(path = "/notifications", method = RequestMethod.GET)
-    NotificationsResponse notificationsByPayKey(@RequestParam(required = false, name = PAY_KEY_PARAM) String payKey) {
-        Collection<HttpRequestDetails> notifications = notificationRepository.all();
-        if (!Strings.isNullOrEmpty(payKey)) notifications = notifications.stream()
-                .map(entry -> new SchwartzianTransformItem<>(entry,
-                        request -> URLEncodedUtils.parse(request.getBody(), Charsets.UTF_8).stream()
-                                .map(pair -> new SchwartzianTransformItem<>(pair, NameValuePair::getName))
-                                .filter(name -> PAY_KEY_PARAM.equals(name.mapped()))
-                                .findAny()
-                                .map(SchwartzianTransformItem::original)
-                                .map(NameValuePair::getValue)))
-                .filter(value -> value.mapped().isPresent())
-                .filter(value -> payKey.equalsIgnoreCase(value.mapped().get()))
-                .map(SchwartzianTransformItem::original)
-                .collect(Collectors.toList());
-        return new NotificationsResponse(notifications);
+    NotificationsResponse notifications(@RequestParam(required = false, name = PAY_KEY_PARAM) String payKey) {
+        if (!Strings.isNullOrEmpty(payKey)) {
+            return notificationsByPayKey(payKey);
+        }
+        return new NotificationsResponse(notificationRepository.all());
     }
 
+    @RequestMapping(path = "/notifications/byPayKey/{payKey}/latest", method = RequestMethod.GET)
+    HttpRequestDetails latestNotificationsByPayKey(@PathVariable String payKey) {
+        return notificationsByPayKayAsStream(payKey).findFirst().orElse(null);
+    }
+
+    @RequestMapping(path = "/notifications/byPayKey/{payKey}", method = RequestMethod.GET)
+    NotificationsResponse notificationsByPayKey(@PathVariable String payKey) {
+        return new NotificationsResponse(notificationsByPayKayAsStream(payKey).collect(Collectors.toList()));
+    }
+
+    private Stream<HttpRequestDetails> notificationsByPayKayAsStream(@RequestParam(required = false, name = PAY_KEY_PARAM) String payKey) {
+        return notificationRepository.all().stream()
+                .map(entry ->
+                        new SchwartzianTransformItem<>(entry,
+                                request -> URLEncodedUtils.parse(request.getBody(), Charsets.UTF_8).stream()
+                                        .map(pair -> new SchwartzianTransformItem<>(pair, NameValuePair::getName))
+                                        .filter(name -> PAY_KEY_PARAM.equals(name.mapped()))
+                                        .findAny()
+                                        .map(SchwartzianTransformItem::original)
+                                        .map(NameValuePair::getValue)))
+                .filter(value -> value.mapped().isPresent())
+                .filter(value -> payKey.equalsIgnoreCase(value.mapped().get()))
+                .map(SchwartzianTransformItem::original);
+    }
 }
