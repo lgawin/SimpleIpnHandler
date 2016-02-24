@@ -3,7 +3,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import pl.lgawin.paypal.ipn.api.MainController
-import pl.lgawin.paypal.ipn.data.NotificationRepository
+import pl.lgawin.paypal.ipn.data.NotificationsRepository
 import pl.lgawin.paypal.ipn.dto.HttpRequestDetails
 import spock.lang.Ignore
 import spock.lang.Specification
@@ -11,11 +11,11 @@ import spock.lang.Specification
 @Ignore
 class MainControllerTest extends Specification {
 
-    NotificationRepository repository
+    NotificationsRepository repository
     MockMvc mockMvc
 
     def setup() {
-        repository = Mock(NotificationRepository)
+        repository = Mock(NotificationsRepository)
         mockMvc = MockMvcBuilders.standaloneSetup(new MainController(repository)).build()
     }
 
@@ -57,9 +57,9 @@ class MainControllerTest extends Specification {
 
     static class UnderTest {
 
-        private final NotificationRepository repo
+        private final NotificationsRepository repo
 
-        UnderTest(NotificationRepository repo) {
+        UnderTest(NotificationsRepository repo) {
             this.repo = repo
         }
 
