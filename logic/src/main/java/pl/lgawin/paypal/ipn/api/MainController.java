@@ -50,6 +50,14 @@ public class MainController {
                 : notificationsRepository.byPayKey(payKey));
     }
 
+    @RequestMapping(path = "/notifications/latest", method = RequestMethod.GET)
+    HttpRequestDetails latestNotification(@RequestParam(required = false, name = "pay_key") String payKey) {
+        return (Strings.isNullOrEmpty(payKey)
+                ? notificationsRepository.all().stream().findFirst()
+                : notificationsRepository.latestByPayKey(payKey))
+                .orElse(null);
+    }
+
     @RequestMapping(path = "/notifications/byPayKey/{payKey}/latest", method = RequestMethod.GET)
     HttpRequestDetails latestNotificationsByPayKey(@PathVariable String payKey) {
         return notificationsRepository.latestByPayKey(payKey).orElse(null);
