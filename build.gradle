@@ -10,8 +10,19 @@ buildscript {
     }
 }
 
+plugins {
+    id 'pl.allegro.tech.build.axion-release' version '1.3.4'
+}
+
 group 'pl.lgawin.paypal'
-version '0.1-SNAPSHOT'
+
+scmVersion {
+
+}
+
+allprojects {
+    project.version = scmVersion.version
+}
 
 repositories {
     mavenCentral()
