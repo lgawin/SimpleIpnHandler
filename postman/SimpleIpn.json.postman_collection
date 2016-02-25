@@ -4,9 +4,12 @@
 	"description": "",
 	"order": [
 		"791344ca-5a7f-7b83-eecb-f667ffef5345",
+		"675f4a9c-5378-73b2-5972-753907831220",
 		"61868150-ae6b-a929-3263-3578490828f3",
 		"e0306888-fdb4-381a-a825-d95aa2e931ea",
-		"3f48720a-d9b9-fd47-2e63-6bcfb0e7aaea"
+		"1b99e41a-09fa-db5f-02c7-d7dca3b51c56",
+		"3f48720a-d9b9-fd47-2e63-6bcfb0e7aaea",
+		"c1445901-3662-c5cf-4251-526c930b6766"
 	],
 	"folders": [
 		{
@@ -25,9 +28,9 @@
 	"public": false,
 	"requests": [
 		{
-			"id": "3f48720a-d9b9-fd47-2e63-6bcfb0e7aaea",
+			"id": "1b99e41a-09fa-db5f-02c7-d7dca3b51c56",
 			"headers": "",
-			"url": "http://{{url}}/notifications/byPayKey/{{payKey}}/latest",
+			"url": "http://{{url}}/notifications/byPayKey/{{payKey}}",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "GET",
@@ -37,8 +40,27 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1456341873768,
-			"name": "Latest notifications by PayKey",
+			"time": 1456353761440,
+			"name": "Notifications by PayKey v2",
+			"description": "",
+			"collectionId": "ae89b958-3b06-9391-6a8f-e674a3f6371a",
+			"responses": []
+		},
+		{
+			"id": "3f48720a-d9b9-fd47-2e63-6bcfb0e7aaea",
+			"headers": "",
+			"url": "http://{{url}}/notifications/latest?pay_key={{payKey}}",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1456358274929,
+			"name": "Latest Notification by PayKey",
 			"description": "",
 			"collectionId": "ae89b958-3b06-9391-6a8f-e674a3f6371a",
 			"responses": []
@@ -62,6 +84,25 @@
 			"collectionId": "ae89b958-3b06-9391-6a8f-e674a3f6371a",
 			"responses": [],
 			"rawModeData": "key=value&pay_key=AP-SOME-KEY"
+		},
+		{
+			"id": "675f4a9c-5378-73b2-5972-753907831220",
+			"headers": "",
+			"url": "http://{{url}}/notifications/latest",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1456358203401,
+			"name": "Latest Notification",
+			"description": "",
+			"collectionId": "ae89b958-3b06-9391-6a8f-e674a3f6371a",
+			"responses": []
 		},
 		{
 			"id": "791344ca-5a7f-7b83-eecb-f667ffef5345",
@@ -101,6 +142,25 @@
 			"collectionId": "ae89b958-3b06-9391-6a8f-e674a3f6371a",
 			"responses": [],
 			"rawModeData": "{{body}}"
+		},
+		{
+			"id": "c1445901-3662-c5cf-4251-526c930b6766",
+			"headers": "",
+			"url": "http://{{url}}/notifications/byPayKey/{{payKey}}/latest",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1456341873768,
+			"name": "Latest Notification by PayKey v2",
+			"description": "",
+			"collectionId": "ae89b958-3b06-9391-6a8f-e674a3f6371a",
+			"responses": []
 		},
 		{
 			"id": "e0306888-fdb4-381a-a825-d95aa2e931ea",
